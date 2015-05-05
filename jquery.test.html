@@ -8,6 +8,7 @@
 		input{
 			display: block;
 
+			margin-top: 0.3em;
 			margin-bottom: 1em;
 			padding: 0.2em;
 
@@ -30,8 +31,7 @@
 	<script type="text/javascript" src="./validate.js"></script>
 	<script type="text/javascript">
 	$(function(){
-		console.log('jQuery works');
-		$('form').validate({'[name="name"]': /.*/, '#password': /.*/, '#zip':'zip', "#email":'email'});
+		$('form').validate({'[name="name"]': /.*/, '#password': /.*/, '#zip':{'adress':'#address','street':'#street','city':'#city','firstAdm':'#firstAdm','secondAdm':'#secondAdm','url':'http://localhost/kody.json'}, "#email":'email'}, {valid: 'valid'});
 	})
 	</script>
 </head>
@@ -45,6 +45,16 @@
 		<input id="email" name="email" type="text" value="asd@asd.com"></input>
 		<label>Zip code:</label>
 		<input id="zip" name="zip" type="text" value="00-00"></input>
+		<div id="address">
+			<label>Street:</label>
+			<input id="street" disabled></input>
+			<label>City:</label>
+			<input id="city" disabled></input>
+			<label>First Administration:</label>
+			<input id="firstAdm" disabled></input>
+			<label>Second Administration:</label>
+			<input id="secondAdm" disabled></input>
+		</div>
 	<form>
 </body>
 </html

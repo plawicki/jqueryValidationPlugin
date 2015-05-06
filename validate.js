@@ -25,7 +25,8 @@
 			patterns:{
 				zip: /^\d{2}-\d{3}$/g,
 				email: /\S+@\S+\.\S+/
-			}
+			},
+			entropy: 61
 		};
 		var $that = $(this);
 
@@ -63,25 +64,35 @@
 		};
 
 		var isPasswordStrong = function(value) {
-			return (value > 1.7) ? true : false;
+			return (value >= standartSettings.entropy) ? true : false;
 		};
 
 		var countStrength = function(password) {
-			var strength = 0;
-			var weightSmall = 1, weightBig = 2, weightSpecial = 3;
+			var entropy = 0,
+        	letters = 26,
+        	digits = 10,
+        	specials = 32,
+        	length = password.toString().length;
 
-			for(var c=0; c<password.length; c++) {
-				var character = password.charCodeAt(c);
-				if(character > 96 && character < 123) {
-					strength += weightSmall;
-				} else if (character > 64 && character < 91) {
-					strength += weightBig;
-				} else {
-					strength += weightSpecial;
-				}
-			}
+        	for(var c=0; c<length; c++) {
 
-			return strength / password.length;
+        		var character = password.toString().charAt(c);
+
+	        	switch(true) {
+	            	case /[A-z]/.test(character):
+	                	entropy += letters;
+	                	break;
+	            	case /[0-9]/.test(character):
+	                	entropy += digits;
+	                	break;
+	            	case /[\W]/.test(character):
+	                	entropy += specials;
+	                	break;
+	       		}
+        	}
+        	entropy = Math.log2(entropy);
+
+        	return entropy *= length;
 		};
 
 		var validatePassword = function($input) {
@@ -91,7 +102,6 @@
 		};
 
 		var validateEmail = function($input) {
-			console.log(standartSettings.patterns.email.test($input.val()))
 			paintField($input, standartSettings.patterns.email.test($input.val()));
 		};
 

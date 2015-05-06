@@ -1,6 +1,8 @@
+<!DOCTYPE html>
 <html>
 <head>
 	<title>jquery plugin test</title>
+	<meta charset="UTF-8">
 	<style>
 		body{
 			font-family: "Verdana";
@@ -26,12 +28,33 @@
 		.invalid{
 			border-color: red;
 		}
+		.password{
+			display: block;
+			width: 20%;	
+			margin-bottom: 1em;
+			padding: 0.2em;
+			border: 0.2em solid red;
+		}
 	</style>
 	<script type="text/javascript" src="./jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="./validate.js"></script>
 	<script type="text/javascript">
 	$(function(){
-		$('form').validate({'[name="name"]': /.*/, '#password': /.*/, '#zip':{'adress':'#address','street':'#street','city':'#city','firstAdm':'#firstAdm','secondAdm':'#secondAdm','url':'http://localhost/kody.json'}, "#email":'email'}, {valid: 'valid'});
+		$('form').validate({
+			'[name="name"]': /.*/, 
+			'#password': "password", 
+			'#email':'email',
+			'#zip':{
+				url:'http://localhost/kody.json', 
+				wrapper:{	selector: '#address',	
+							street: {selector: '#street', jsonField: 'ulica'}, 
+							city: {selector:'#city', jsonField: 'miejscowość'}, 
+							firstAdm: {selector:'#firstAdm', jsonField: 'województwo'},
+							secondAdm: {selector:'#secondAdm', jsonField: 'powiat'}
+						}
+			}},
+			{valid: 'valid', invalid: 'invalid'}
+		);
 	})
 	</script>
 </head>

@@ -29,85 +29,13 @@
 			entropy: 61
 		};
 		var $that = $(this);
-
-		var paintField = function($input, correct) {
-			var classs = correct ? (styles && styles.valid || standartSettings.styles.valid) : (styles && styles.invalid || standartSettings.styles.invalid);
-
-			$input.removeClass(styles && styles.valid || standartSettings.styles.valid)
-				.removeClass(styles && styles.invalid || standartSettings.styles.invalid)
-				.addClass(classs);
-
-			return correct;
-		};
-
-		var validateZip = function($input) {
-			paintField(standartSettings.patterns.zip.test($input, $input.val()));
-		};
-
-		var validateZipAutocomplete = function($input, pattern) {
-			var $autoAdressDiv = $input.parent().children(pattern.wrapper.selector || standartSettings.selectors.address);
-					
-			$.ajax({
-				url: pattern.url,
-				dataType: "json"
-			}).done(function(json) {
-				var zip = json[$input.val()];
-
-				if(paintField($input, zip)) {
-					$.each(pattern.wrapper, function(key, val){
-						$($autoAdressDiv).children(val.selector || standartSettings.selectors.street).val(
-							zip[val.jsonField || val]
-						);
-					});
-				}
+		
+		$.each(settings, function(input, value) {
+			var $input = $that.children(input);
+			$input.on('input', function() {
+				validateCore($input, value);
 			});
-		};
-
-		var isPasswordStrong = function(value) {
-			return (value >= standartSettings.entropy) ? true : false;
-		};
-
-		var countStrength = function(password) {
-			var entropy = 0,
-        	letters = 26,
-        	digits = 10,
-        	specials = 32,
-        	length = password.toString().length;
-
-        	for(var c=0; c<length; c++) {
-
-        		var character = password.toString().charAt(c);
-
-	        	switch(true) {
-	            	case /[A-z]/.test(character):
-	                	entropy += letters;
-	                	break;
-	            	case /[0-9]/.test(character):
-	                	entropy += digits;
-	                	break;
-	            	case /[\W]/.test(character):
-	                	entropy += specials;
-	                	break;
-	       		}
-        	}
-        	entropy = Math.log2(entropy);
-
-        	return entropy *= length;
-		};
-
-		var validatePassword = function($input) {
-			var passwordStr = countStrength($input.val());
-
-			paintField($input, isPasswordStrong(passwordStr));
-		};
-
-		var validateEmail = function($input) {
-			paintField($input, standartSettings.patterns.email.test($input.val()));
-		};
-
-		var validateByRegexp = function($input, pattern) {
-			paintField($input, pattern.test($input.value));
-		};
+		});
 
 		var validateCore = function($input, pattern) {
 			switch(pattern.constructor) {
@@ -136,13 +64,84 @@
 					break;
 			}
 		};
+		
+		var validateZip = function($input) {
+			paintField(standartSettings.patterns.zip.test($input, $input.val()));
+		};
+		
+		var validatePassword = function($input) {
+			var passwordStr = countStrength($input.val());
+			paintField($input, isPasswordStrong(passwordStr));
+		};
+		
+		var countStrength = function(password) {
+			var entropy = 0,
+        	letters = 26,
+        	digits = 10,
+        	specials = 32,
+        	length = password.toString().length;
 
-		$.each(settings, function(input, value) {
-			var $input = $that.children(input);
-			$input.on('input', function() {
-				validateCore($input, value);
+        	for(var c=0; c<length; c++) {
+
+        		var character = password.toString().charAt(c);
+
+	        	switch(true) {
+	            	case /[A-z]/.test(character):
+	                	entropy += letters;
+	                	break;
+	            	case /[0-9]/.test(character):
+	                	entropy += digits;
+	                	break;
+	            	case /[\W]/.test(character):
+	                	entropy += specials;
+	                	break;
+	       		}
+        	}
+        	entropy = Math.log2(entropy);
+
+        	return entropy *= length;
+		};
+		
+		var isPasswordStrong = function(value) {
+			return (value >= standartSettings.entropy) ? true : false;
+		};
+
+		var validateEmail = function($input) {
+			paintField($input, standartSettings.patterns.email.test($input.val()));
+		};
+		
+		var validateByRegexp = function($input, pattern) {
+			paintField($input, pattern.test($input.value));
+		};
+		
+		var validateZipAutocomplete = function($input, pattern) {
+			var $autoAdressDiv = $input.parent().children(pattern.wrapper.selector || standartSettings.selectors.address);
+					
+			$.ajax({
+				url: pattern.url,
+				dataType: "json"
+			}).done(function(json) {
+				var zip = json[$input.val()];
+
+				if(paintField($input, zip)) {
+					$.each(pattern.wrapper, function(key, val){
+						$($autoAdressDiv).children(val.selector || standartSettings.selectors.street).val(
+							zip[val.jsonField || val]
+						);
+					});
+				}
 			});
-		});
+		};
+		
+		var paintField = function($input, correct) {
+			var classs = correct ? (styles && styles.valid || standartSettings.styles.valid) : (styles && styles.invalid || standartSettings.styles.invalid);
+
+			$input.removeClass(styles && styles.valid || standartSettings.styles.valid)
+				.removeClass(styles && styles.invalid || standartSettings.styles.invalid)
+				.addClass(classs);
+
+			return correct;
+		};
 
 		return this;
 	};

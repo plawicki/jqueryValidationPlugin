@@ -34,28 +34,8 @@
 			var $input = $that.children(input);
 			$input.on('input', function() {
 				validateCore($input, value);
-				checkIfLockSubmit(); 
 			});
 		});
-
-		var checkIfLockSubmit = function() {
-			var retVal = false;
-			$.each($that.children(), function(key, value){
-				var $value = $(value);
-				if($value.hasClass(styles && styles.invalid || standartSettings.styles.invalid)) {
-					retVal = true;
-				}
-				if(!retVal && $value.hasClass(styles && styles.valid || standartSettings.styles.valid)) {
-					retVal = false;
-				}
-			});
-			blockSubmit(retVal);
-		}
-
-		var blockSubmit = function(doBlock) {
-			var $submit = $that.children("[type='submit']");
-			$submit.prop("disabled", doBlock);
-		}
 
 		var validateCore = function($input, pattern) {
 			switch(pattern.constructor) {
@@ -160,8 +140,31 @@
 				.removeClass(styles && styles.invalid || standartSettings.styles.invalid)
 				.addClass(classs);
 
+			checkIfLockSubmit();
+
 			return correct;
 		};
+
+		var checkIfLockSubmit = function() {
+			var retVal = false;
+			$.each($that.children("input"), function(key, value){
+				var $value = $(value);
+				if(!retVal && $value.hasClass(styles && styles.valid || standartSettings.styles.valid)) {
+					retVal = false;
+				}
+				if($value.hasClass(styles && styles.invalid || standartSettings.styles.invalid)) {
+					retVal = true;
+				}
+			});
+
+			console.log(retVal)
+			blockSubmit(retVal);
+		}
+
+		var blockSubmit = function(doBlock) {
+			var $submit = $that.children("[type='submit']");
+			$submit.prop("disabled", doBlock);
+		}
 
 		return this;
 	};

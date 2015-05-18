@@ -34,8 +34,28 @@
 			var $input = $that.children(input);
 			$input.on('input', function() {
 				validateCore($input, value);
+				checkIfLockSubmit(); 
 			});
 		});
+
+		var checkIfLockSubmit = function() {
+			var retVal = false;
+			$.each($that.children(), function(key, value){
+				var $value = $(value);
+				if($value.hasClass(styles && styles.invalid || standartSettings.styles.invalid)) {
+					retVal = true;
+				}
+				if(!retVal && $value.hasClass(styles && styles.valid || standartSettings.styles.valid)) {
+					retVal = false;
+				}
+			});
+			blockSubmit(retVal);
+		}
+
+		var blockSubmit = function(doBlock) {
+			var $submit = $that.children("[type='submit']");
+			$submit.prop("disabled", doBlock);
+		}
 
 		var validateCore = function($input, pattern) {
 			switch(pattern.constructor) {
@@ -66,7 +86,7 @@
 		};
 		
 		var validateZip = function($input) {
-			paintField(standartSettings.patterns.zip.test($input, $input.val()));
+			paintField($input, standartSettings.patterns.zip.test($input, $input.val()));
 		};
 		
 		var validatePassword = function($input) {

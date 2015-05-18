@@ -156,8 +156,6 @@
 					retVal = true;
 				}
 			});
-
-			console.log(retVal)
 			blockSubmit(retVal);
 		}
 

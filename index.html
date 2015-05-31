@@ -40,7 +40,22 @@
 	<script type="text/javascript" src="./validate.js"></script>
 	<script type="text/javascript">
 	$(function(){
-		$('form').validate({
+		$('#formOne').validate({
+			'[name="name"]': /.*/, 
+			'#password': "password", 
+			'#email':'email',
+			'#zip':{
+				url:'http://localhost/kody.json', 
+				wrapper:{	selector: '#address',	
+							street: {selector: '#street', jsonField: 'ulica'}, 
+							city: {selector:'#city', jsonField: 'miejscowość'}, 
+							firstAdm: {selector:'#firstAdm', jsonField: 'województwo'},
+							secondAdm: {selector:'#secondAdm', jsonField: 'powiat'}
+						}
+			}},
+			{valid: 'valid', invalid: 'invalid'}
+		);
+		$('#formTwo').validate({
 			'[name="name"]': /.*/, 
 			'#password': "password", 
 			'#email':'email',
@@ -59,7 +74,28 @@
 	</script>
 </head>
 <body>
+	<form id="formOne">
+		<label>Name:</label>
+		<input id="name"  name="name" type="text"></input>
+		<label>Password:</label>
+		<input id="password" name="password" type="password"></input>
+		<label>Email:</label>
+		<input id="email" name="email" type="text" value="asd@asd.com"></input>
+		<label>Zip code:</label>
+		<input id="zip" name="zip" type="text" value="00-00"></input>
+		<div id="address">
+			<label>Street:</label>
+			<input id="street" disabled></input>
+			<label>City:</label>
+			<input id="city" disabled></input>
+			<label>First Administration:</label>
+			<input id="firstAdm" disabled></input>
+			<label>Second Administration:</label>
+			<input id="secondAdm" disabled></input>
+		</div>
 	<form>
+	<hr/>
+	<form id="formTwo">
 		<label>Name:</label>
 		<input id="name"  name="name" type="text"></input>
 		<label>Password:</label>

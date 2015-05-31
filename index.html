@@ -61,11 +61,11 @@
 			'#email':'email',
 			'#zip':{
 				url:'kody.json', 
-				wrapper:{	selector: '#address',	
-							street: {selector: '#street', jsonField: 'ulica'}, 
-							city: {selector:'#city', jsonField: 'miejscowość'}, 
-							firstAdm: {selector:'#firstAdm', jsonField: 'województwo'},
-							secondAdm: {selector:'#secondAdm', jsonField: 'powiat'}
+				wrapper:{	selector: '#addressA',	
+							street: {selector: '#streetA', jsonField: 'ulica'}, 
+							city: {selector:'#cityA', jsonField: 'miejscowość'}, 
+							firstAdm: {selector:'#firstAdmA', jsonField: 'województwo'},
+							secondAdm: {selector:'#secondAdmA', jsonField: 'powiat'}
 						}
 			}},
 			{valid: 'valid', invalid: 'invalid'}
@@ -104,15 +104,15 @@
 		<input id="email" name="email" type="text" value="asd@asd.com"></input>
 		<label>Zip code:</label>
 		<input id="zip" name="zip" type="text" value="00-00"></input>
-		<div id="address">
+		<div id="addressA">
 			<label>Street:</label>
-			<input id="street" disabled></input>
+			<input id="streetA" disabled></input>
 			<label>City:</label>
-			<input id="city" disabled></input>
+			<input id="cityA" disabled></input>
 			<label>First Administration:</label>
-			<input id="firstAdm" disabled></input>
+			<input id="firstAdmA" disabled></input>
 			<label>Second Administration:</label>
-			<input id="secondAdm" disabled></input>
+			<input id="secondAdmA" disabled></input>
 		</div>
 	<form>
 </body>

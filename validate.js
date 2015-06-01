@@ -31,7 +31,7 @@
 		var $that = $(this);
 		
 		$.each(settings, function(input, value) {
-			var $input = $that.children(input);
+			var $input = $that.find(input);
 			$input.on('input', function() {
 				validateCore($input, value);
 			});
